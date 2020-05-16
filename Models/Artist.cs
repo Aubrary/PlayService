@@ -10,8 +10,6 @@ namespace PlayService.Models {
 
         public List<Album> Albums {get; set;}
 
-        public List<Song> Songs {get; set;}
-
         public int Rating {get; set;}
     }
 }

@@ -10,6 +10,8 @@ namespace PlayService.Controllers {
     public abstract class CrudControllerBase<TEntity> 
     : ControllerBase where TEntity : EntityBase {
         public DbSet<TEntity> _entityContext;
+        public IQueryable<TEntity> _queryableContext;
+
         protected readonly PlayServiceContext _context;
 
         public CrudControllerBase(
@@ -22,12 +24,12 @@ namespace PlayService.Controllers {
 
         [HttpGet]
         public ActionResult<IEnumerable<TEntity>> GetAll() {
-            return Ok(_entityContext);
+            return Ok(GetQueryableContext().ToList());
         }
 
         [HttpGet("{id}")]
         public ActionResult<TEntity> Get(Guid? id) {
-            var entity = _entityContext.Find(id);
+            var entity = GetQueryableContext().FirstOrDefault(e => e.Id == id);
 
             if (entity == null) {
                 return NotFound();
@@ -54,7 +56,7 @@ namespace PlayService.Controllers {
                 return BadRequest();
             }
 
-            var entity = _entityContext.First(e => e.Id == id);
+            var entity = GetQueryableContext().First(e => e.Id == id);
             MapToEntity(model, entity);
 
             _context.SaveChanges();
@@ -78,5 +80,6 @@ namespace PlayService.Controllers {
         }
 
         protected abstract TEntity MapToEntity(TEntity model, TEntity entity = null);
+        protected abstract IQueryable<TEntity> GetQueryableContext();
     }
 }

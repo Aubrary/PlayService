@@ -19,6 +19,8 @@ namespace PlayService.Controllers {
                 entity = new Song();
             }
 
+            var test = _context.Songs.Include(e => e.Album).Include(e => e.Genre);
+
             var albumExists = _context.Albums.Any(e => e.Id == song.AlbumId);
             if(!albumExists){
                 throw new Exception($"Album does not exist with ID = {song.AlbumId}");
@@ -27,8 +29,13 @@ namespace PlayService.Controllers {
             entity.Title = song.Title;
             entity.Minutes = song.Minutes;
             entity.Seconds = song.Seconds;
+            entity.AlbumId = song.AlbumId;
 
             return entity;
+        }
+
+        protected override IQueryable<Song> GetQueryableContext(){
+            return _context.Songs.Include(e => e.Album);
         }
     }
 }

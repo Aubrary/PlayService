@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using PlayService.Data;
+using Microsoft.OpenApi.Models;
 
 namespace PlayService
 {
@@ -27,12 +28,24 @@ namespace PlayService
             IServiceCollection serviceCollections = services.AddDbContext<PlayServiceContext> (
                 options => options.UseNpgsql(Configuration["Data:PlayServiceConnection:ConnectionString"])
             );
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services
+            .AddMvc(option => option.EnableEndpointRouting = false)
+            .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
             app.UseMvc();
         }
     }

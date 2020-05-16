@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlayService.Models;
 using PlayService.Data;
 using System;
+using System.Linq;
 
 namespace PlayService.Controllers {
     [Route("api/[controller]")]
@@ -21,6 +22,10 @@ namespace PlayService.Controllers {
             entity.Name = genre.Name;
 
             return entity;
+        }
+
+        protected override IQueryable<Genre> GetQueryableContext(){
+            return _context.Genres;
         }
     }
     

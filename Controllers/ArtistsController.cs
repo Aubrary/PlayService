@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 
 namespace PlayService.Controllers {
-    [Route("api/controller")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ArtistsController : CrudControllerBase<Artist> {
         // Dependecy injection of PlayServiceContext
@@ -23,6 +23,10 @@ namespace PlayService.Controllers {
             entity.Rating = artist.Rating;
 
             return entity;
+        }
+
+        protected override IQueryable<Artist> GetQueryableContext(){
+            return _context.Artists.Include(e => e.Albums).ThenInclude(e => e.Songs);
         }
     }
 }

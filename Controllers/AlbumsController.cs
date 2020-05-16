@@ -23,11 +23,15 @@ namespace PlayService.Controllers {
             if(!artistExists){
                 throw new Exception($"Artist does not exist with ID = {album.ArtistId}");
             }
-            
+
             entity.ArtistId = album.ArtistId;
             entity.Rating = album.Rating;
 
             return entity;
+        }
+
+        protected override IQueryable<Album> GetQueryableContext(){
+            return _context.Albums.Include(e => e.Artist).Include(e => e.Songs);
         }
     }
 
