@@ -4,10 +4,7 @@ using System;
 
 namespace PlayService.Models {
 
-    public class Artist {
-
-        [Key]
-        public Guid Id {get; set;}
+    public class Artist : EntityBase {
 
         public string Name {get; set;}
 
@@ -16,6 +13,5 @@ namespace PlayService.Models {
         public List<Song> Songs {get; set;}
 
         public int Rating {get; set;}
-        
     }
 }

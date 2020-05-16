@@ -4,14 +4,7 @@ using System;
 
 namespace PlayService.Models {
     
-    public class Song {
-
-        [Key]
-        public Guid Id {get; set;}
-
-        public Guid ArtistId { get; set; }
-        public Artist Artist {get; set;}
-
+    public class Song : EntityBase {
         public Guid AlbumId { get; set; }
         public Album Album {get; set;}
 
@@ -23,7 +16,7 @@ namespace PlayService.Models {
 
         public int Seconds {get; set;}
 
-        public double Streams {get; set;}
+        public int StreamCount {get; set;}
 
     }
 }
