@@ -82,6 +82,7 @@ namespace PlayService
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
+                c.SwaggerEndpoint("/playservice/swagger/v1/swagger.json", "PlayService API V1 Traefik");
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlayService API V1");
             });
             
