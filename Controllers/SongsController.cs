@@ -37,5 +37,10 @@ namespace PlayService.Controllers {
         protected override IQueryable<Song> GetQueryableContext(){
             return _context.Songs.Include(e => e.Album);
         }
+
+        protected override void EntityCreated(Song model, Song entity){
+            // Call StreamService
+            // TO-DO: Implement upload songs here.
+        }
     }
 }

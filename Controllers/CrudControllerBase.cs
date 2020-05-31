@@ -5,8 +5,10 @@ using PlayService.Models;
 using PlayService.Data;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PlayService.Controllers {
+    [Authorize]
     public abstract class CrudControllerBase<TEntity> 
     : ControllerBase where TEntity : EntityBase {
         public DbSet<TEntity> _entityContext;
@@ -45,6 +47,9 @@ namespace PlayService.Controllers {
 
             _entityContext.Add(entity);
             _context.SaveChanges();
+           
+           //TO-DO: Implementation of UploadSongs
+           EntityCreated(model, entity);
 
             return Ok(entity);
         }
@@ -81,5 +86,9 @@ namespace PlayService.Controllers {
 
         protected abstract TEntity MapToEntity(TEntity model, TEntity entity = null);
         protected abstract IQueryable<TEntity> GetQueryableContext();
+
+        protected virtual void EntityCreated(TEntity model, TEntity entity){
+            // Do nothing
+        }
     }
 }
