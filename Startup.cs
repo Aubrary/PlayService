@@ -85,9 +85,28 @@ namespace PlayService
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "PlayService API V1");
             });
             
+            UpdateDatabase(app);
+            
             app.UseAuthentication();
 
             app.UseMvc();
+            
         }
+        
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            Console.WriteLine("Migrating...");
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<PlayServiceContext>())
+                {
+                    context.Database.Migrate();
+                    Console.WriteLine("Migrated!");
+                }
+            }
+        }
+
     }
 }
